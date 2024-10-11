@@ -1,0 +1,10 @@
+TODO LIST:
+
+1. bikin sebuah pengecekan kalau depedenciesnya udah keinstall / belum (template)
+2. bikin instalasi curl, git, nodejs, dan npm (system)
+3. itu dulu sik...
+
+(template) = cuma tampilan
+(system) = sudah dengan command system ril
+
+(pengetesan bisa dilakukan di docker dengan menginstall 3 jenis distro yang disupport: (Ubuntu, Debian, Arch))
