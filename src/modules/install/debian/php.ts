@@ -23,6 +23,10 @@ export default async function InstallPhpDebian() {
       "sudo apt-get -y install php7.4 php7.4-{bcmath,bz2,intl,gd,mbstring,mysql,zip} > /dev/null 2>&1"
     );
 
+    execSync(
+      "sudo apt-get -y install php7.4 php7.4-bcmath php7.4-bz2 php7.4-intl php7.4-gd php7.4-mbstring php7.4-mysql php7.4-zip"
+    );
+
     return;
   } catch (error) {
     console.log(error);
