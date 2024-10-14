@@ -25,6 +25,8 @@ export default async function InstallPhpDebian() {
 
     return;
   } catch (error) {
+    console.log(error);
+
     p.cancel("Failed to install PHP 7.4");
     process.exit(0);
   }
