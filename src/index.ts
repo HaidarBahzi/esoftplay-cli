@@ -1,10 +1,11 @@
 import * as p from "@clack/prompts";
 import { execSync } from "child_process";
+import fs from "fs/promises";
 import { setTimeout } from "node:timers/promises";
 import color from "picocolors";
-import InstallAllArch from "./functions/arch/install_all";
-import InstallAllUbuntu from "./functions/ubuntu/install_all";
-import InstallAllDebian from "./functions/debian/install_all";
+import InstallAllArch from "./modules/install/arch/all";
+import InstallAllUbuntu from "./modules/install/ubuntu/all";
+import InstallAllDebian from "./modules/install/debian/all";
 
 async function main() {
   console.clear();
@@ -33,7 +34,6 @@ async function main() {
 
 async function handleInstall() {
   const distro = await detectDistro();
-  const architecture = await detectArchitecture();
 
   if (distro === "Unsupported") {
     p.cancel("Distro not supported.");
@@ -42,9 +42,9 @@ async function handleInstall() {
 
   p.intro(color.bgCyan(color.black("Esoftplay Framework Wizard")));
 
-  p.note(`Detected: ${distro} (Architecture: ${architecture}x)`);
+  p.note(`Detected: ${distro}`);
 
-  const installFunction = getInstallerForDistro(distro);
+  const installFunction = getInstallerForDistro(distro!);
   if (!installFunction) {
     p.cancel("Unsupported distro");
     process.exit(0);
@@ -72,37 +72,29 @@ async function handleInstall() {
   );
 }
 
-async function detectDistro(): Promise<string> {
+async function detectDistro() {
   try {
-    const distro = execSync("lsb_release -i | grep ID: | cut -d':' -f2")
-      .toString()
-      .trim();
-    return distro === "Arch" || distro === "Ubuntu" || distro === "Debian"
-      ? distro
-      : "Unsupported";
+    const osRelease = await fs.readFile("/etc/os-release", "utf8");
+    const lines = osRelease.split("\n");
+
+    for (const line of lines) {
+      if (line.startsWith("ID=")) {
+        return line.split("=")[1].replace(/"/g, "").trim();
+      }
+    }
   } catch (error) {
     console.error("Error detecting distro:", error);
     return "Unsupported";
   }
 }
 
-async function detectArchitecture(): Promise<string> {
-  try {
-    const architecture = execSync("getconf LONG_BIT").toString().trim();
-    return architecture;
-  } catch (error) {
-    console.error("Error detecting architecture:", error);
-    return "Unknown";
-  }
-}
-
 function getInstallerForDistro(distro: string) {
   switch (distro) {
-    case "Arch":
+    case "arch":
       return InstallAllArch;
-    case "Ubuntu":
+    case "ubuntu":
       return InstallAllUbuntu;
-    case "Debian":
+    case "debian":
       return InstallAllDebian;
     default:
       return null;
@@ -144,7 +136,7 @@ async function handleNew() {
 
   const s = p.spinner();
   s.start(`Scaffolding project at ${fullPath}`);
-  await setTimeout(5000);
+  await setTimeout(5000); // Simulate project creation
   s.stop(`Project '${projectName}' successfully created at ${fullPath}`);
 
   p.note(`cd ${fullPath}\nedit config.php`, "Next steps");
@@ -173,7 +165,7 @@ async function handleUpdate() {
 
   const s = p.spinner();
   s.start("Updating Esoftplay Framework...");
-  await setTimeout(5000);
+  await setTimeout(5000); // Simulate update process
   s.stop("Esoftplay Framework successfully updated.");
 
   p.outro(

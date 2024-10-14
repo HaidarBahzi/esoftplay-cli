@@ -1,7 +1,7 @@
 import { setTimeout } from "node:timers/promises";
-import InstallMasterUbuntu from "./install_master";
-import InstallMysqlUbuntu from "./install_mysql";
-import InstallPhpUbuntu from "./install_php";
+import InstallMasterUbuntu from "./master";
+import InstallMysqlUbuntu from "./mysql";
+import InstallPhpUbuntu from "./php";
 
 export default async function InstallAllUbuntu() {
   await setTimeout(2000);

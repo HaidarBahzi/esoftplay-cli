@@ -1,8 +1,9 @@
 TODO LIST:
 
-1. bikin sebuah pengecekan kalau depedenciesnya udah keinstall / belum (template)
-2. bikin instalasi curl, git, nodejs, dan npm (system)
-3. itu dulu sik...
+1. bikin semacam return dari masing masing install function (misal udah keinstall nanti return 1, kalau belum 0) (template)
+2. nanti hasil return tsb jika semuanya dalam install_all adalah 1 maka nanti akan menampilkan pesan bahwa semua dependencies sudah di install dan tak perlu untuk install lagi (template)
+3. bikin semacam cek dependencies di command new, kalau ada dependencies yang belum terinstall maka nanti akan menampilkan pesan bahwa dependencies tidak lengkap dan menyuruh user untuk menjalankan command install (template)
+4. itu dulu sik...
 
 (template) = cuma tampilan
 (system) = sudah dengan command system ril

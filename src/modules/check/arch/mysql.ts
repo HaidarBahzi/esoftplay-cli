@@ -1,10 +1,6 @@
-import * as p from "@clack/prompts";
 import { execSync } from "child_process";
-import { setTimeout } from "node:timers/promises";
 
-export default async function InstallMysqlUbuntu() {
-  const s = p.spinner();
-
+export default async function CheckMysqlArch() {
   try {
     const mysqlVersion = execSync("mysql --version", {
       stdio: "pipe",
@@ -16,14 +12,12 @@ export default async function InstallMysqlUbuntu() {
       const distribVersion = distribMatch[1];
 
       if (distribVersion.startsWith("5.7")) {
-        return;
+        return { isInstalled: true, dependencies: "MySQL" };
       }
     }
   } catch (error) {
-    // Intentionally ignored: MySQL is not installed, no action required
+    return { isInstalled: false, dependencies: "MySQL" };
   }
 
-  s.start("Installing MySQL 5.7");
-  await setTimeout(5000);
-  s.stop("Installed MySQL 5.7");
+  return { isInstalled: false, dependencies: "MySQL" };
 }
