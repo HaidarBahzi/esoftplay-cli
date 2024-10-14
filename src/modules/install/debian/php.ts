@@ -5,7 +5,9 @@ export default async function InstallPhpDebian() {
   try {
     execSync("sudo apt update > /dev/null 2>&1");
 
-    execSync("sudo apt -y install wget apt-transport-https > /dev/null 2>&1");
+    execSync(
+      "sudo apt -y install wget apt-transport-https lsb_release > /dev/null 2>&1"
+    );
 
     execSync(
       "sudo wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg > /dev/null 2>&1"
