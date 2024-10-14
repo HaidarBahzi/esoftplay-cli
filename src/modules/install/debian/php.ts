@@ -6,7 +6,7 @@ export default async function InstallPhpDebian() {
     execSync("sudo apt update > /dev/null 2>&1");
 
     execSync(
-      "sudo apt -y install wget apt-transport-https lsb-release > /dev/null 2>&1"
+      "sudo apt -y install apt-utils wget apt-transport-https lsb-release > /dev/null 2>&1"
     );
 
     execSync(

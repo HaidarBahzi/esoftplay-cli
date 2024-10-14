@@ -9,7 +9,7 @@ export default async function InstallMasterDebian() {
       "sudo chown -R $(whoami):$(id -g -n $(whoami)) /var/www/html > /dev/null 2>&1"
     );
 
-    execSync("cd /var/www/html > /dev/null 2>&1");
+    process.chdir("/var/www/html");
 
     execSync("git clone https://github.com/esoftplay/master > /dev/null 2>&1");
 
@@ -19,7 +19,7 @@ export default async function InstallMasterDebian() {
       "sudo chown -R $(whoami):$(id -g -n $(whoami)) /opt > /dev/null 2>&1"
     );
 
-    execSync("cd /opt > /dev/null 2>&1");
+    process.chdir("/opt");
 
     execSync("git clone https://github.com/esoftplay/tools > /dev/null 2>&1");
   } catch (error) {
