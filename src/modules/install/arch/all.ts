@@ -1,14 +1,15 @@
-import InstallPhpArch from "./php";
-import InstallMysqlArch from "./mysql";
-import InstallMasterArch from "./master";
+import InstallPhpArch from "./php.ts";
+import InstallMysqlArch from "./mysql.ts";
+import InstallMasterArch from "./master.ts";
 
 import * as p from "@clack/prompts";
 import { setTimeout } from "node:timers/promises";
-import { execSync } from "child_process";
+import { execSync } from "node:child_process";
 
-import CheckPhpArch from "../../check/arch/php";
-import CheckMysqlArch from "../../check/arch/mysql";
-import CheckMasterArch from "../../check/arch/master";
+import CheckPhpArch from "../../check/arch/php.ts";
+import CheckMysqlArch from "../../check/arch/mysql.ts";
+import CheckMasterArch from "../../check/arch/master.ts";
+import process from "node:process";
 
 export default async function InstallAllArch() {
   const s = p.spinner();

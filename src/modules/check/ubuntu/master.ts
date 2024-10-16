@@ -1,5 +1,5 @@
-import { existsSync } from "fs";
-import { join } from "path";
+import { existsSync } from "node:fs";
+import { join } from "node:path";
 
 export default async function CheckMasterUbuntu() {
   const folderPath = join("/var/www/html/master");

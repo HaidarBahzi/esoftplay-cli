@@ -1,21 +1,22 @@
-import InstallPhpDebian from "./php";
-import InstallMysqlDebian from "./mysql";
-import InstallMasterDebian from "./master";
+import InstallPhpDebian from "./php.ts";
+import InstallMysqlDebian from "./mysql.ts";
+import InstallMasterDebian from "./master.ts";
 
 import * as p from "@clack/prompts";
 import { setTimeout } from "node:timers/promises";
-import { execSync } from "child_process";
+import { execSync } from "node:child_process";
 
-import CheckPhpDebian from "../../check/debian/php";
-import CheckMysqlDebian from "../../check/debian/mysql";
-import CheckMasterDebian from "../../check/debian/master";
+import CheckPhpDebian from "../../check/debian/php.ts";
+import CheckMysqlDebian from "../../check/debian/mysql.ts";
+import CheckMasterDebian from "../../check/debian/master.ts";
+import process from "node:process";
 
 export default async function InstallAllDebian() {
   const s = p.spinner();
 
   try {
     execSync("sudo apt -h > /dev/null 2>&1");
-  } catch (error) {
+  } catch (_error) {
     process.exit(0);
   }
 
@@ -56,7 +57,7 @@ export default async function InstallAllDebian() {
         try {
           await install();
           s.message(`${name} installed successfully.`);
-        } catch (installError) {
+        } catch (_error) {
           console.error(`Failed to install ${name}`);
         }
         await setTimeout(2500);

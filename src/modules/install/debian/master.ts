@@ -1,5 +1,6 @@
 import * as p from "@clack/prompts";
-import { execSync } from "child_process";
+import { execSync } from "node:child_process";
+import process from "node:process";
 
 export default async function InstallMasterDebian() {
   try {
@@ -22,8 +23,8 @@ export default async function InstallMasterDebian() {
     process.chdir("/opt");
 
     execSync("git clone https://github.com/esoftplay/tools > /dev/null 2>&1");
-  } catch (error) {
-    p.cancel("Failed to install MySQL 5.7");
+  } catch (_error) {
+    p.cancel("Failed to install FrameworkCore");
     process.exit(0);
   }
 }

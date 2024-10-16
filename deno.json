@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "strict": true
+  },
+  "imports": {
+    "@clack/prompts": "npm:@clack/prompts",
+    "picocolors": "npm:picocolors",
+    "@types/node": "npm:@types/node"
+  }
+}

