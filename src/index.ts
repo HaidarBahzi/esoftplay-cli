@@ -66,7 +66,10 @@ async function handleInstall() {
     }
   );
 
-  p.note(`cd /var/www/html\nesoftplay new`, "Next steps");
+  p.note(
+    `Start apache2 and MySQL Service\ncd /var/www/html\nesoftplay new`,
+    "Next steps"
+  );
 
   p.outro(
     `Need assistance? Visit: ${color.underline(
@@ -199,7 +202,7 @@ async function handleUpdate() {
 
   const s = p.spinner();
   s.start("Updating Esoftplay Framework...");
-  await setTimeout(5000); // Simulate update process
+  await setTimeout(5000);
   s.stop("Esoftplay Framework successfully updated.");
 
   p.outro(

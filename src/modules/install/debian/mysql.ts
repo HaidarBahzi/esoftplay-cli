@@ -1,6 +1,6 @@
 import * as p from "@clack/prompts";
 import { execSync } from "node:child_process";
-import { mkdirSync, unlinkSync } from "node:fs";
+import { mkdirSync, unlinkSync, rmdirSync } from "node:fs";
 import process from "node:process";
 
 export default async function InstallMysqlDebian() {
@@ -69,6 +69,10 @@ export default async function InstallMysqlDebian() {
     execSync(
       "sudo dpkg -i mysql-server_5.7.42-1debian10_amd64.deb > /dev/null 2>&1"
     );
+
+    process.chdir("..");
+
+    rmdirSync("temp-mysql", { recursive: true });
   } catch (_error) {
     p.cancel("Failed to install MySQL 5.7");
     process.exit(0);

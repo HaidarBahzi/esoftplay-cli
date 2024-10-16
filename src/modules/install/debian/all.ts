@@ -63,7 +63,7 @@ export default async function InstallAllDebian() {
         await setTimeout(2500);
       }
     }
-    s.stop("All missing dependencies have been processed.");
+    s.stop("All missing dependencies have been installed.");
   } else {
     s.stop("All required framework dependencies are already installed.");
   }
