@@ -201,10 +201,10 @@ async function getCurrentDirPath() {
 async function handleUpdate() {
   p.intro(color.bgCyan(color.black("Esoftplay Framework Wizard")));
 
-  await setTimeout(1000);
-
   const s = p.spinner();
   s.start("Updating Esoftplay Framework");
+
+  await setTimeout(1500);
 
   try {
     process.chdir("/var/www/html/master");
