@@ -168,7 +168,7 @@ async function handleNew() {
 
     unlinkSync("script.php");
     unlinkSync("script.sh");
-  } catch (error) {
+  } catch (_error) {
     rmdirSync(fullPath, { recursive: true });
 
     p.cancel(`Failed to create project at ${fullPath}`);
@@ -188,7 +188,7 @@ async function handleNew() {
   process.exit(0);
 }
 
-async function getCurrentDirPath(): Promise<string> {
+async function getCurrentDirPath() {
   try {
     const path = execSync("pwd").toString().trim();
     return path;
@@ -204,12 +204,23 @@ async function handleUpdate() {
   await setTimeout(1000);
 
   const s = p.spinner();
-  s.start("Updating Esoftplay Framework...");
-  await setTimeout(5000);
+  s.start("Updating Esoftplay Framework");
+
+  try {
+    process.chdir("/var/www/html/master");
+
+    execSync("git reset --hard origin/master");
+
+    execSync("git pull");
+  } catch (_error) {
+    p.cancel("Failed to update Esoftplay Framework.");
+    process.exit(0);
+  }
+
   s.stop("Esoftplay Framework successfully updated.");
 
   p.outro(
-    `Need help? Visit: ${color.underline(
+    `Need assistance? Visit: ${color.underline(
       color.cyan("https://dev.esoftplay.com")
     )}`
   );
