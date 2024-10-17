@@ -6,7 +6,6 @@ import process from "node:process";
 import { join } from "node:path";
 import * as p from "@clack/prompts";
 import color from "picocolors";
-import InstallAllArch from "./modules/install/arch/all.ts";
 import InstallAllUbuntu from "./modules/install/ubuntu/all.ts";
 import InstallAllDebian from "./modules/install/debian/all.ts";
 
@@ -36,6 +35,11 @@ async function main() {
 }
 
 async function handleInstall() {
+  const distroOptions: any = {
+    ubuntu: "Ubuntu",
+    debian: "Debian",
+  };
+
   const distro = await detectDistro();
 
   if (distro === "Unsupported") {
@@ -45,13 +49,13 @@ async function handleInstall() {
 
   p.intro(color.bgCyan(color.black("Esoftplay Framework Wizard")));
 
-  p.note(`Detected: ${distro}`);
-
   const installFunction = getInstallerForDistro(distro!);
   if (!installFunction) {
     p.cancel("Unsupported distro");
     process.exit(0);
   }
+
+  p.note(`Detected Distro: ${distroOptions[distro!]}`);
 
   await p.group(
     {
@@ -98,8 +102,6 @@ async function detectDistro() {
 
 function getInstallerForDistro(distro: string) {
   switch (distro) {
-    case "arch":
-      return InstallAllArch;
     case "ubuntu":
       return InstallAllUbuntu;
     case "debian":
