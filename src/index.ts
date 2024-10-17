@@ -206,8 +206,6 @@ async function handleUpdate() {
   const s = p.spinner();
   s.start("Updating Esoftplay Framework");
 
-  await setTimeout(1500);
-
   try {
     process.chdir("/var/www/html/master");
 
