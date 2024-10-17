@@ -1,14 +1,14 @@
-import * as p from "@clack/prompts";
-import { execSync } from "node:child_process";
+import { existsSync, mkdirSync, rmdirSync, unlinkSync } from "node:fs";
 import fs from "node:fs/promises";
+import { execSync } from "node:child_process";
 import { setTimeout } from "node:timers/promises";
+import process from "node:process";
+import { join } from "node:path";
+import * as p from "@clack/prompts";
 import color from "picocolors";
 import InstallAllArch from "./modules/install/arch/all.ts";
 import InstallAllUbuntu from "./modules/install/ubuntu/all.ts";
 import InstallAllDebian from "./modules/install/debian/all.ts";
-import process from "node:process";
-import { existsSync, mkdirSync, rmdirSync } from "node:fs";
-import { join } from "node:path";
 
 async function main() {
   console.clear();
@@ -165,6 +165,9 @@ async function handleNew() {
     execSync("php script.php > script.sh 2>/dev/null");
 
     execSync("sh script.sh > /dev/null 2>&1");
+
+    unlinkSync("script.php");
+    unlinkSync("script.sh");
   } catch (error) {
     rmdirSync(fullPath, { recursive: true });
 
