@@ -30,12 +30,7 @@ export default async function InstallMysqlDebian() {
     );
 
     execSync(
-      "echo 'mysql-community-server mysql-server/root_password password '''' | sudo debconf-set-selections && echo 'mysql-community-server mysql-server/root_password_again password '''' | sudo debconf-set-selections",
-      { stdio: "pipe" }
-    );
-
-    execSync(
-      "sudo dpkg-preconfigure mysql-community-server_5.7.42-1debian10_amd64.deb > /dev/null 2>&1"
+      "sudo dpkg-preconfigure mysql-community-server_5.7.42-1debian10_amd64.deb"
     );
 
     execSync(
