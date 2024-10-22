@@ -1,6 +1,6 @@
 import * as p from "@clack/prompts";
 import { execSync } from "node:child_process";
-import { mkdirSync, unlinkSync, rmdirSync } from "node:fs";
+import { mkdirSync, unlinkSync, rmdirSync, existsSync } from "node:fs";
 import process from "node:process";
 
 export default async function InstallMysqlDebian() {
@@ -11,9 +11,11 @@ export default async function InstallMysqlDebian() {
       "sudo apt -y install dialog apt-utils libsuma1 libatomic1 libaio1 libncurses6 libmecab2 psmisc > /dev/null 2>&1"
     );
 
-    execSync(
-      "wget https://downloads.mysql.com/archives/get/p/23/file/mysql-server_5.7.42-1debian10_amd64.deb-bundle.tar > /dev/null 2>&1"
-    );
+    if (!existsSync("mysql-server_5.7.42-1debian10_amd64.deb-bundle.tar")) {
+      execSync(
+        "wget https://downloads.mysql.com/archives/get/p/23/file/mysql-server_5.7.42-1debian10_amd64.deb-bundle.tar > /dev/null 2>&1"
+      );
+    }
 
     mkdirSync("temp-mysql");
 
